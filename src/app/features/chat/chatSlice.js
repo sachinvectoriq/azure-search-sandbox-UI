@@ -220,7 +220,7 @@ export const submitFeedback = createAsyncThunk(
     try {
       const queryLanguage = mapLanguageForAPI(getState().chat.selectedLanguage);
       const response = await axios.post(
-        "https://app-azuresearch-qa-emo.azurewebsites.net/feedback",
+        "https://app-azuresearch-qa-evolve.azurewebsites.net/feedback",
         {
           chat_session_id: sessionId,
           user_name: userName, // user_name
