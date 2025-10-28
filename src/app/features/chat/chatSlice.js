@@ -1,3 +1,4 @@
+//src\app\features\chat\chatSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import apiClient from "../../../services/apiClient";
@@ -38,13 +39,12 @@ const cleanAiResponse = (text) => {
     .trim();
 };
 
-
 const mapLanguageForAPI = (uiLanguage) => {
   const languageMap = {
-    'en': 'english',
-    'fr': 'french_canadian'
+    en: "english",
+    fr: "french_canadian",
   };
-  return languageMap[uiLanguage] || 'english';
+  return languageMap[uiLanguage] || "english";
 };
 
 // Async thunk for sending user question to actual API
@@ -152,7 +152,7 @@ export const sendQuestionToAPI = createAsyncThunk(
             citations:
               data.citations.map((c) => c.title).join(", ") || "No citations", // Format citations as string
             login_session_id: loginSessionId, // Use the login_session_id from auth slice
-            query_language: queryLanguage // Added new parameter here
+            query_language: queryLanguage, // Added new parameter here
           };
 
           await apiClient.post("/log", logData); // <--- NEW API call for audit
@@ -203,7 +203,6 @@ export const submitFeedback = createAsyncThunk(
 
     const loginSessionId = "123456789"; // Changed from int to string
 
-
     const message = messages.find((msg) => msg.id === messageId);
     if (!message) {
       throw new Error("Message not found for feedback");
@@ -232,7 +231,7 @@ export const submitFeedback = createAsyncThunk(
           feedback: text,
           login_session_id: loginSessionId,
           user_id: userId,
-          query_language: queryLanguage 
+          query_language: queryLanguage,
         },
         {
           headers: {
@@ -256,6 +255,15 @@ export const submitFeedback = createAsyncThunk(
   }
 );
 
+let getSelectedLanguage = () => {
+  let lang = localStorage.getItem("selected_language");
+  if (!lang) {
+    lang = "en"; // Default to English
+    localStorage.setItem("selected_language", lang);
+  }
+  return lang;
+};
+
 const initialState = {
   messages: [],
   input: "",
@@ -273,7 +281,7 @@ const initialState = {
   sessionId: getSessionId(),
   userId: getUserId(), // Initialize userId here
   previewDocURL: null,
-  selectedLanguage: "en", // default to English
+  selectedLanguage: getSelectedLanguage(), // Instead of hardcoded "en"
 };
 
 const chatSlice = createSlice({
@@ -373,6 +381,7 @@ const chatSlice = createSlice({
     },
     setSelectedLanguage: (state, action) => {
       state.selectedLanguage = action.payload;
+      localStorage.setItem("selected_language", action.payload); // Persist to localStorage
     },
     resetSessionId: (state) => {
       const newId = Date.now().toString();

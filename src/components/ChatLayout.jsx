@@ -1,3 +1,4 @@
+//src\components\ChatLayout.jsx
 import { useDispatch, useSelector } from 'react-redux';
 import WelcomeScreen from './Welcomescreen';
 import React from 'react';
