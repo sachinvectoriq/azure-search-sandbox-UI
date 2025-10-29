@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 
-const API_BASE = "https://app-azuresearch-qa-evolve.azurewebsites.net";
+const API_BASE = "https://app-ka-sandbox-001.azurewebsites.net";
 
 const SettingPage = () => {
   const [formData, setFormData] = useState({
